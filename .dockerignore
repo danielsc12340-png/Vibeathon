@@ -1,0 +1,9 @@
+.git
+instance
+respaldos
+datos_entrenamiento
+datos_rurales
+base_datos
+ejemplos
+tests
+**/__pycache__

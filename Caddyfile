@@ -1,0 +1,4 @@
+{$EIRA_DOMINIO} {
+	encode gzip
+	reverse_proxy eira:8000
+}

@@ -1,0 +1,29 @@
+# Base general EIRA en un servidor con HTTPS automático (Caddy + Let's Encrypt).
+# 1) Apunta tu dominio al servidor.  2) Crea el archivo .env con EIRA_DOMINIO=eira.tu-dominio.org
+# 3) docker compose up -d          Ver DESPLIEGUE_CENTRAL.md
+services:
+  eira:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - eira_instance:/app/instance   # base y llaves de cifrado
+      - eira_respaldos:/datos/respaldos
+    expose:
+      - "8000"
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - EIRA_DOMINIO=${EIRA_DOMINIO:?Define EIRA_DOMINIO en el archivo .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on:
+      - eira
+volumes:
+  eira_instance:
+  eira_respaldos:
+  caddy_data:
